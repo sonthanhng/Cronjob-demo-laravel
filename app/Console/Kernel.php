@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        // include your command here
+        '\App\Console\Commands\TestCronjob',
     ];
 
     /**
@@ -26,6 +27,10 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+
+        //insert name and signature of you command and define the time of excusion
+        $schedule->command('TestCronjob:testCronjobFunction')
+                 ->everyMinute();
     }
 
     /**
