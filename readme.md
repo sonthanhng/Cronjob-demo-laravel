@@ -7,45 +7,49 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
 </p>
 
-## About Laravel
+## Cronjob Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
+Laravel's command scheduler allows you to fluently and expressively define your command schedule within Laravel itself. When using the scheduler, only a single Cron entry is needed on your server. This responsitory introduces you how to create a simple Cronjob.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+You can read more about Taks scheduling [here](https://laravel.com/docs/5.6/scheduling)
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb combination of simplicity, elegance, and innovation give you tools you need to build any application with which you are tasked.
+## Setup project
 
-## Learning Laravel
+First create new project, In your terminal, cd to your root folder of your server. I assume you have composer installed. Then run this command:
+```console
+composer create-project laravel/laravel Cronjob-demo-laravel
+```
 
-Laravel has the most extensive and thorough documentation and video tutorial library of any modern web application framework. The [Laravel documentation](https://laravel.com/docs) is thorough, complete, and makes it a breeze to get started learning the framework.
+## Create Command
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 900 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
+After installation is complete, cd into your project and run this command:
+```console
+php artisan make:command TestCronjob
+```
 
-## Laravel Sponsors
+This is going to create a command file inside ..\app\Console\Commands, TestCronjob.php. You can replace 'TestCrojob' with anything you want. After that, change these two files below follow my files:
+- TestCronjob.php
+- app\Console\Kernel.php
 
-We would like to extend our thanks to the following sponsors for helping fund on-going Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](http://patreon.com/taylorotwell):
+## Run Cronjob
 
-- **[Vehikl](http://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Styde](https://styde.net)**
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
+First, run this command to check if your Cronjob is registered to Artisan. You must see it in the list:
+```console
+php artisan list
+```
+After your command registered to the command, run the below command:
+```console
+php artisan TestCronjob:testCronjobFunction
+```
 
-## Contributing
+## More
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+What if you want to set the crone job to run automatically without initiating using command. Just run this command:
+```console
+crontab -e
+```
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+This will open server crontab file, paste this code inside, save it and exit.
+```console
+* * * * * php /path/to/artisan schedule:run >> /dev/null 2>&1
+```
